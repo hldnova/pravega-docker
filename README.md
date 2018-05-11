@@ -1,6 +1,6 @@
 # Docker Container for Pravega Demo
 
-This is for a Docker container that can perform the following pipeline:
+This is for running the following pipeline in a Docker container:
 ```
 Apache access logs -> Logstash with Pravega output plugin -> Pravega stream
 ```
@@ -23,7 +23,7 @@ $ cd pravega-docker
 $ docker build --rm=true -t pravega-demo . 
 ```
 
-Edit `start.sh` to specify Pravega scope and stream if needed.
+Edit `start.sh` to adjust Pravega scope/stream or ports if needed.
 
 Start the script. It would take up to a minute to two for the container to be ready.
 ```
@@ -34,3 +34,27 @@ Add more logs to access.log if needed, e.g., by running command like the followi
 ```
 echo '10.1.1.11 - peter [19/Mar/2018:02:24:01 -0400] "PUT /mapping/ HTTP/1.1" 500 182 "http://example.com/myapp" "python-client"' >> access.log
 ```
+
+You can then start a Pravega reader to read from it. The logs are sent to Pravega stream as json string, for example.
+```
+{
+        "request" => "/mapping/",
+          "agent" => "\"python-client\"",
+           "auth" => "peter",
+          "ident" => "-",
+           "verb" => "PUT",
+        "message" => "10.1.1.11 - peter [19/Mar/2018:02:24:01 -0400] \"PUT /mapping/ HTTP/1.1\" 500 182 \"http://example.com/myapp\" \"python-client\"",
+           "path" => "/opt/data/access.log",
+       "referrer" => "\"http://example.com/myapp\"",
+     "@timestamp" => 2018-03-19T06:24:01.000Z,
+       "response" => "500",
+          "bytes" => "182",
+       "clientip" => "10.1.1.11",
+       "@version" => "1",
+           "host" => "5e91529a729f",
+    "httpversion" => "1.1"
+}
+```
+
+
+Besides reading logs from a file, the Logstash can also 

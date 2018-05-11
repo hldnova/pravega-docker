@@ -56,5 +56,3 @@ You can then start a Pravega reader to read from it. The logs are sent to Praveg
 }
 ```
 
-
-Besides reading logs from a file, the Logstash can also 

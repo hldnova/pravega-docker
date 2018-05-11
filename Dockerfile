@@ -1,26 +1,35 @@
-#
-# Copyright (c) 2018 Dell Inc., or its subsidiaries. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-
-FROM logstash:5.6.4
+# Docker container for Pravega
+FROM ubuntu:xenial
 MAINTAINER Lida He "https://github.com/hldnova"
+
+
+RUN apt update && \
+    apt install -y --no-install-recommends \
+        wget supervisor curl net-tools  \
+        apt-transport-https \
+        software-properties-common && \
+    rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf ~/.cache && rm -rf /usr/share/doc
+
+# Install Java.
+RUN \
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt update && \
+    apt install -y --no-install-recommends oracle-java8-installer && \
+    rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf ~/.cache && rm -rf /usr/share/doc && \
+    rm -rf /var/cache/oracle-jdk8-installer
+
+# Install logstash
+RUN wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add - && \
+    echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-5.x.list && \
+    apt update && apt install -y --no-install-recommends logstash && \
+    rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf ~/.cache && rm -rf /usr/share/doc
 
 # Pravega version
 ENV PRAVEGA_VERSION=0.2.1
 
 # Logstash Pravega output plugin version
 ENV PLUGIN_VERSION=0.2.0
-
-RUN apt update && \
-    apt install -y --no-install-recommends \
-        wget supervisor procps net-tools curl && \
-    rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf ~/.cache && rm -rf /usr/share/doc
 
 # Install Pravega
 RUN cd /opt && \
@@ -43,8 +52,6 @@ RUN mkdir -p /var/log/pravega
 RUN mkdir -p /opt/data
 
 ADD filters/* /etc/logstash/conf.d/
-
-ADD access-sample.log /opt/data/access.log
 
 ADD entrypoint.sh /opt/
 

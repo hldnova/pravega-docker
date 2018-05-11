@@ -1,13 +1,11 @@
 #!/bin/sh
-
 set -u
 
 PRAVEGA_ENDPOINT=tcp://localhost:9090
 PRAVEGA_SCOPE=myscope
 PRAVEGA_STREAM=apacheaccess
 CONTAINER_NAME=pravega
-#IMAGE_NAME=emccorp/pravega-docker
-IMAGE_NAME=aa
+IMAGE_NAME=pravega-demo
 
 docker rm -f ${CONTAINER_NAME}
 

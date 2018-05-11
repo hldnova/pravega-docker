@@ -38,6 +38,7 @@ docker run -d --name $CONTAINER_NAME \
     -e PRAVEGA_STREAM=${PRAVEGA_STREAM} \
     ${IMAGE_NAME} 
 ```
+The logs files can be found under at /tmp/logs.
 
 Add access logs to /tmp/access.log, e.g., by runing the command below a few times.
 ```

@@ -39,7 +39,7 @@ docker run -d --name $CONTAINER_NAME \
     ${IMAGE_NAME} 
 ```
 
-Add access logs to /tmp/access.log, e.g., by runing the command below every second or so
+Add access logs to /tmp/access.log, e.g., by runing the command below a few times.
 ```
 echo '10.1.1.11 - peter [19/Mar/2018:02:24:01 -0400] "PUT /mapping/ HTTP/1.1" 500 182 "http://example.com/myapp" "python-client"' >> /tmp/access.log
 ```

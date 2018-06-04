@@ -58,6 +58,7 @@ ADD supervisord_pravega.conf /etc/supervisor/conf.d/pravega-standalone.conf
 RUN mkdir -p /var/log/pravega
 RUN mkdir -p /opt/data
 
+ADD logstash.yml /etc/logstash/
 ADD filters/* /etc/logstash/conf.d/
 
 ADD entrypoint.sh /opt/

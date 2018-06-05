@@ -11,6 +11,7 @@ docker rm -f ${CONTAINER_NAME}
 docker run -d --name $CONTAINER_NAME \
     -p 9090:9090 \
     -p 9091:9091 \
+    -p 6000:6000 \
     -p 9600:9600 \
     -v ${PWD}/access.log:/opt/data/access.log \
     -v ${PWD}/logs:/var/log/pravega \

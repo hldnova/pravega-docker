@@ -63,8 +63,14 @@ ADD filters/* /etc/logstash/conf.d/
 
 ADD entrypoint.sh /opt/
 
+# pravega controller port
 EXPOSE 9090
+# pravega rest api port
 EXPOSE 9091
+# pravega segment store server port
+EXPOSE 6000
+# logstash monitoring api port
+EXPOSE 9600
 
 ENV TERM linux
 
